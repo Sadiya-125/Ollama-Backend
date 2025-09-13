@@ -2,7 +2,7 @@
 FROM python:3.11-slim
 
 # Install Dependencies for Ollama
-RUN apt-get update && apt-get install -y curl gnupg lsb-release git
+RUN apt-get update && apt-get install -y curl gnupg lsb-release git procps
 
 # Install Ollama
 RUN curl -fsSL https://ollama.com/install.sh | sh
@@ -10,9 +10,10 @@ RUN curl -fsSL https://ollama.com/install.sh | sh
 ENV OLLAMA_MODELS=/models
 RUN mkdir -p $OLLAMA_MODELS
 
-RUN ollama serve && \
-ollama pull mistral && \
-ollama pull all-minilm
+RUN ollama serve & \
+    ollama pull mistral && \
+    ollama pull all-minilm && \
+    pkill ollama
 
 # Install Python Dependencies
 WORKDIR /app
