@@ -1,28 +1,33 @@
-# Base image
+# Base Image
 FROM python:3.11-slim
 
-# Install dependencies for Ollama
+# Install Dependencies for Ollama
 RUN apt-get update && apt-get install -y curl gnupg lsb-release git
 
 # Install Ollama
 RUN curl -fsSL https://ollama.com/install.sh | sh
 
-# Set Ollama model storage
 ENV OLLAMA_MODELS=/models
 RUN mkdir -p $OLLAMA_MODELS
 
-# Pre-pull models (mistral + nomic-embed-text)
-RUN ollama pull mistral && ollama pull nomic-embed-text
+RUN ollama serve & \
+    for i in {1..10}; do \
+      curl -s http://localhost:11434/api/version && break; \
+      echo "Waiting for Ollama..."; \
+      sleep 2; \
+    done && \
+    ollama pull mistral && \
+    ollama pull all-minilm && \
+    pkill ollama
 
-# Install Python dependencies
+# Install Python Dependencies
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy backend code
 COPY . .
 
-# Expose ports: 
+# Expose Ports: 
 # 11434 -> Ollama API
 # 8000 -> FastAPI
 EXPOSE 8000 11434
