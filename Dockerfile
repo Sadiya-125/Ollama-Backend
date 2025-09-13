@@ -11,6 +11,11 @@ ENV OLLAMA_MODELS=/models
 RUN mkdir -p $OLLAMA_MODELS
 
 RUN ollama serve & \
+    for i in {1..10}; do \
+      curl -s http://localhost:11434/api/version && break; \
+      echo "Waiting for Ollama..."; \
+      sleep 2; \
+    done && \
     ollama pull mistral && \
     ollama pull all-minilm && \
     pkill ollama
