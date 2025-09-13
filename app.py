@@ -8,7 +8,6 @@ from pinecone import Pinecone, ServerlessSpec
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
-from langchain_core.messages import AIMessage, HumanMessage
 
 # ------------------------
 # Config
@@ -25,10 +24,8 @@ app = FastAPI()
 llm = Ollama(model="mistral")
 embedding = OllamaEmbeddings(model="all-minilm")
 
-# Pinecone client
 pc = Pinecone(api_key=PINECONE_API_KEY)
 
-# Load vector store
 docsearch = PineconeVectorStore.from_existing_index(
     index_name=INDEX_NAME,
     embedding=embedding
@@ -96,7 +93,7 @@ rag_chain = (
 # ------------------------
 class ChatRequest(BaseModel):
     question: str
-    chat_history: list = []  # Pass prior conversation
+    chat_history: list = []
 
 class ChatResponse(BaseModel):
     answer: str

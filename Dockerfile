@@ -10,15 +10,9 @@ RUN curl -fsSL https://ollama.com/install.sh | sh
 ENV OLLAMA_MODELS=/models
 RUN mkdir -p $OLLAMA_MODELS
 
-RUN ollama serve & \
-    for i in {1..10}; do \
-      curl -s http://localhost:11434/api/version && break; \
-      echo "Waiting for Ollama..."; \
-      sleep 2; \
-    done && \
-    ollama pull mistral && \
-    ollama pull all-minilm && \
-    pkill ollama
+RUN ollama serve --once && \
+ollama pull mistral && \
+ollama pull all-minilm
 
 # Install Python Dependencies
 WORKDIR /app
