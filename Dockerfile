@@ -5,7 +5,7 @@ FROM python:3.11-slim
 RUN apt-get update && apt-get install -y curl gnupg lsb-release git
 
 # Install Ollama
-RUN curl -fsSL https://ollama.com/download.sh | sh
+RUN curl -fsSL https://ollama.com/install.sh | sh
 
 # Set Ollama model storage
 ENV OLLAMA_MODELS=/models
