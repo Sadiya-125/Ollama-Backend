@@ -10,7 +10,7 @@ RUN curl -fsSL https://ollama.com/install.sh | sh
 ENV OLLAMA_MODELS=/models
 RUN mkdir -p $OLLAMA_MODELS
 
-RUN ollama serve --once && \
+RUN ollama serve && \
 ollama pull mistral && \
 ollama pull all-minilm
 
