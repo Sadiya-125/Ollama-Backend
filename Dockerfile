@@ -2,7 +2,7 @@
 FROM python:3.11-slim
 
 # Install dependencies for Ollama
-RUN apt-get update && apt-get install -y curl gnupg lsb-release
+RUN apt-get update && apt-get install -y curl gnupg lsb-release git
 
 # Install Ollama
 RUN curl -fsSL https://ollama.com/download.sh | sh
@@ -10,6 +10,9 @@ RUN curl -fsSL https://ollama.com/download.sh | sh
 # Set Ollama model storage
 ENV OLLAMA_MODELS=/models
 RUN mkdir -p $OLLAMA_MODELS
+
+# Pre-pull models (mistral + nomic-embed-text)
+RUN ollama pull mistral && ollama pull nomic-embed-text
 
 # Install Python dependencies
 WORKDIR /app
