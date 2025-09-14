@@ -21,8 +21,8 @@ INDEX_NAME = "medical-chatbot"
 app = FastAPI()
 
 # LLM + Embedding
-llm = Ollama(model="mistral")
-embedding = OllamaEmbeddings(model="all-minilm")
+llm = Ollama(model="mistral", base_url="http://127.0.0.1:11434")
+embedding = OllamaEmbeddings(model="all-minilm", base_url="http://127.0.0.1:11434")
 
 pc = Pinecone(api_key=PINECONE_API_KEY)
 
