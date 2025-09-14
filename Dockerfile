@@ -33,4 +33,4 @@ COPY . .
 EXPOSE 8000 11434
 
 # Start both Ollama and FastAPI
-CMD ollama serve & uvicorn app:app --host 0.0.0.0 --port 8000
+CMD ollama serve & uvicorn app:app --host 0.0.0.0 --port ${PORT:-10000}
